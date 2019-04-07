@@ -57,7 +57,7 @@ Then select and open ```AsyncInn.sln```
 #### Microsoft Visual C# Step by Step Ninth Edition
 #### C# 7.0 in a Nutshell
 #### C# Pocket Reference
-
+#### https://getbootstrap.com/docs/4.3/getting-started/introduction/#responsive-meta-tag
 
 
 ------------------------------
