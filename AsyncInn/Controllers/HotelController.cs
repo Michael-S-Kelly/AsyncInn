@@ -10,29 +10,26 @@ using AsyncInn.Models;
 
 namespace AsyncInn.Controllers
 {
-    public class HotelRoomController : Controller
+    public class HotelController : Controller
     {
         private readonly AsyncInnDbContext _context;
 
-        public HotelRoomController(AsyncInnDbContext context)
+        public HotelController(AsyncInnDbContext context)
         {
             _context = context;
         }
 
         /// <summary>
-        /// Gets Hotel Rooms
+        /// Gets Hotel
         /// </summary>
         /// <returns></returns>
         public async Task<IActionResult> Index()
         {
-            var AsyncInnDbContext = _context.HotelRoom
-                .Include(h => h.Hotel)
-                .Include(r => r.Room);
-            return View(await AsyncInnDbContext.ToListAsync());
+            return View(await _context.Hotel.ToListAsync());
         }
 
         /// <summary>
-        /// Gets Hotel Room Details
+        /// Gets Hotel Details
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -43,51 +40,45 @@ namespace AsyncInn.Controllers
                 return NotFound();
             }
 
-            var hotelRoom = await _context.HotelRoom
-                .Include(h => h.Hotel)
-                .Include(r => r.Room)
-                .FirstOrDefaultAsync(r => r.RoomID == id);
-            if (hotelRoom == null)
+            var hotel = await _context.Hotel
+                .FirstOrDefaultAsync(h => h.ID == id);
+            if (hotel == null)
             {
                 return NotFound();
             }
 
-            return View(hotelRoom);
+            return View(hotel);
         }
 
         /// <summary>
-        /// Get Create Hotel Room
+        /// Get Create Hotel
         /// </summary>
         /// <returns></returns>
         public IActionResult Create()
         {
-            ViewData["RoomID"] = new SelectList(_context.Room, "ID", "Name");
-            ViewData["HotelID"] = new SelectList(_context.Hotel, "ID", "Name");
             return View();
         }
 
         /// <summary>
-        /// Post Create Hotel Room
+        /// Post Create Hotel
         /// </summary>
-        /// <param name="hotelRoom"></param>
+        /// <param name="hotel"></param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HotelID,RoomID,Rate,PetFriendly")] HotelRoom hotelRoom)
+        public async Task<IActionResult> Create([Bind("ID,Name,StreetAddress,City,State,Phone")] Hotel hotel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(hotelRoom);
+                _context.Add(hotel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HotelID"] = new SelectList(_context.Room, "ID", "Name", hotelRoom.HotelID);
-            ViewData["RoomID"] = new SelectList(_context.Amenities, "ID", "Name", hotelRoom.RoomID);
-            return View(hotelRoom);
+            return View(hotel);
         }
 
         /// <summary>
-        /// Get Edit Hotel Room
+        /// Get Edit Hotel
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -98,27 +89,25 @@ namespace AsyncInn.Controllers
                 return NotFound();
             }
 
-            var hotelRoom = await _context.HotelRoom.FindAsync(id);
-            if (hotelRoom == null)
+            var hotel = await _context.Hotel.FindAsync(id);
+            if (hotel == null)
             {
                 return NotFound();
             }
-            ViewData["HotelID"] = new SelectList(_context.Room, "ID", "Name", hotelRoom.HotelID);
-            ViewData["RoomID"] = new SelectList(_context.Amenities, "ID", "Name", hotelRoom.RoomID);
-            return View(hotelRoom);
+            return View(hotel);
         }
 
         /// <summary>
-        /// Post Edit Hotel Room
+        /// Post Edit Hotel
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="hotelRoom"></param>
+        /// <param name="hotel"></param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HotelID,RoomID,Rate,PetFriendly")] HotelRoom hotelRoom)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,StreetAddress,City,State,Phone")] Hotel hotel)
         {
-            if (id != hotelRoom.RoomID)
+            if (id != hotel.ID)
             {
                 return NotFound();
             }
@@ -127,12 +116,12 @@ namespace AsyncInn.Controllers
             {
                 try
                 {
-                    _context.Update(hotelRoom);
+                    _context.Update(hotel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HotelRoomExists(hotelRoom.RoomID))
+                    if (!HotelExists(hotel.ID))
                     {
                         return NotFound();
                     }
@@ -143,13 +132,11 @@ namespace AsyncInn.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HotelID"] = new SelectList(_context.Room, "ID", "Name", hotelRoom.HotelID);
-            ViewData["RoomID"] = new SelectList(_context.Amenities, "ID", "Name", hotelRoom.RoomID);
-            return View(hotelRoom);
+            return View(hotel);
         }
 
         /// <summary>
-        /// Get Delete Hotel Room
+        /// Get Delete Hotel
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -160,20 +147,18 @@ namespace AsyncInn.Controllers
                 return NotFound();
             }
 
-            var hotelRoom = await _context.HotelRoom
-                .Include(h => h.HotelID)
-                .Include(r => r.RoomID)
-                .FirstOrDefaultAsync(r => r.RoomID == id);
-            if (hotelRoom == null)
+            var hotel = await _context.Hotel
+                .FirstOrDefaultAsync(h => h.ID == id);
+            if (hotel == null)
             {
                 return NotFound();
             }
 
-            return View(hotelRoom);
+            return View(hotel);
         }
 
         /// <summary>
-        /// Post Delete Hotel Room
+        /// Post Delete Hotel
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -181,20 +166,20 @@ namespace AsyncInn.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var hotelRoom = await _context.HotelRoom.FindAsync(id);
-            _context.HotelRoom.Remove(hotelRoom);
+            var hotel = await _context.Hotel.FindAsync(id);
+            _context.Hotel.Remove(hotel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         /// <summary>
-        /// Confirms whether the Hotel Room Exists
+        /// Confirms whether the Hotel Exists
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private bool HotelRoomExists(int id)
+        private bool HotelExists(int id)
         {
-            return _context.HotelRoom.Any(r => r.RoomID == id);
+            return _context.Hotel.Any(h => h.ID == id);
         }
     }
 }
