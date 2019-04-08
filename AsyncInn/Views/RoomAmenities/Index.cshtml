@@ -1,0 +1,42 @@
+﻿@model IEnumerable<AsyncInn.Models.RoomAmenities>
+
+@{ 
+    ViewData["Title"] = "Index";
+}
+
+<h1>Amenities Assigned to Room</h1>
+
+<p>
+    <a asp-action="Create">Add Amenity to Room</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Room)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amenities)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Room.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amenities.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { })  |
+                    @Html.ActionLink("Details", "Details", new {  })  |
+                    @Html.ActionLink("Delete", "Delete", new {  })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
