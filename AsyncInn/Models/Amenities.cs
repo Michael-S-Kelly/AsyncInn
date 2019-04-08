@@ -8,8 +8,8 @@ namespace AsyncInn.Models
     public class Amenities
     {
         public int ID { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
 
-        public RoomAmenities RoomAmenities { get; set; }
+        public ICollection<RoomAmenities> RoomAmenities { get; set; }
     }
 }

@@ -1,9 +1,9 @@
-# CODE 13: Intro to Entity Framework
+# CODE 13 & 14: Intro to Entity Framework
 
 ------------------------------
 
 # Async Inn Management System
-#### Lab13-Async Inn Management System
+#### Lab13 & 14-Async Inn Management System
 ##### *Author: Mike Kelly*
 
 ------------------------------
