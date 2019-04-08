@@ -1,0 +1,26 @@
+﻿@model AsyncInn.Models.RoomAmenities
+
+@{ 
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Amenity Assignment to Room</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RoomID" />
+            <input type="hidden" asp-for="AmenitiesID" />
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
