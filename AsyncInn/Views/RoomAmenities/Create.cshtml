@@ -2,6 +2,7 @@
 
 @{  
     ViewData["Title"] = "Create";
+    Layout = "_Layout";
 }
 
 <h1>Assign amenities to a room</h1>
@@ -29,7 +30,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="NewFolder1\" />
-    <Folder Include="wwwroot\" />
     <Folder Include="NewFolder\" />
   </ItemGroup>
 
