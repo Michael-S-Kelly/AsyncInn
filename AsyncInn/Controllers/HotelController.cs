@@ -1,18 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AsyncInn.Models;
+using AsyncInn.Models.Interfaces;
+//using AsyncInn.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using AsyncInn.Data;
-using AsyncInn.Models;
 
 namespace AsyncInn.Controllers
 {
     public class HotelController : Controller
     {
+        //private readonly IHotelsManager _context;
         private readonly AsyncInnDbContext _context;
+
+        /*
+        public HotelController(IHotelsManager context)
+        {
+            _context = context;
+        }
+        */
 
         public HotelController(AsyncInnDbContext context)
         {
