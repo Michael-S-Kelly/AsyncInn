@@ -7,14 +7,14 @@ namespace AsyncInn.Models.Interfaces
 {
     public interface IAmenitiesManager
     {
-        Task CreateAmenity(Amenities amenities);
+        Task CreateAmenty(Amenities amenity);
 
-        void DeleteAmenity(Amenities amenities);
+        void DeleteAmenity(int id);
 
         Task<Amenities> GetAmenity(int id);
 
-        Task<List<Amenities>> GetAmenities(Amenities amenities);
+        Task<List<Amenities>> GetAmenities();
 
-        Task<List<RoomAmenities>> GetRoomAmenities(int id);
+        bool AmenityExists(int id);
     }
 }

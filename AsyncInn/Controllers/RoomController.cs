@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AsyncInn.Models;
+using AsyncInn.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AsyncInn.Data;
-using AsyncInn.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AsyncInn.Controllers
 {
     public class RoomController : Controller
     {
-        private readonly AsyncInnDbContext _context;
+        private readonly IRoomManager _room;
 
-        public RoomController(AsyncInnDbContext context)
+        public RoomController(IRoomManager context)
         {
-            _context = context;
+            _room = context;
         }
 
         /// <summary>
@@ -25,7 +22,8 @@ namespace AsyncInn.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Room.ToListAsync());
+            List<Room> room = await _room.GetRooms();
+            return View(room);
         }
 
         /// <summary>
@@ -33,15 +31,15 @@ namespace AsyncInn.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
+            if (id <= 0)
             {
                 return NotFound();
             }
 
-            var room = await _context.Room
-                .FirstOrDefaultAsync(r => r.ID == id);
+            var room = await _room.GetRoom(id);
+
             if (room == null)
             {
                 return NotFound();
@@ -70,8 +68,7 @@ namespace AsyncInn.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(room);
-                await _context.SaveChangesAsync();
+                await _room.CreateRoom(room);
                 return RedirectToAction(nameof(Index));
             }
             return View(room);
@@ -82,14 +79,14 @@ namespace AsyncInn.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
+            if (id <= 0)
             {
                 return NotFound();
             }
 
-            var room = await _context.Room.FindAsync(id);
+            var room = await _room.GetRoom(id);
             if (room == null)
             {
                 return NotFound();
@@ -116,8 +113,7 @@ namespace AsyncInn.Controllers
             {
                 try
                 {
-                    _context.Update(room);
-                    await _context.SaveChangesAsync();
+                    _room.UpdateRoom(id, room);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -140,15 +136,14 @@ namespace AsyncInn.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
+            if (id <= 0)
             {
                 return NotFound();
             }
 
-            var room = await _context.Room
-                .FirstOrDefaultAsync(r => r.ID == id);
+            var room = await _room.GetRoom(id);
             if (room == null)
             {
                 return NotFound();
@@ -166,9 +161,8 @@ namespace AsyncInn.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var room = await _context.Room.FindAsync(id);
-            _context.Room.Remove(room);
-            await _context.SaveChangesAsync();
+            _room.DeleteRoom(id);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -179,7 +173,7 @@ namespace AsyncInn.Controllers
         /// <returns></returns>
         private bool RoomExists(int id)
         {
-            return _context.Room.Any(r => r.ID == id);
+            return _room.RoomExists(id);
         }
     }
 }

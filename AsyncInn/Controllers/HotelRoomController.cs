@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AsyncInn.Data;
+using AsyncInn.Models;
+using AsyncInn.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AsyncInn.Data;
-using AsyncInn.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AsyncInn.Controllers
 {
@@ -14,6 +13,10 @@ namespace AsyncInn.Controllers
     {
         private readonly AsyncInnDbContext _context;
 
+        /// <summary>
+        /// Connects the class to the Database
+        /// </summary>
+        /// <param name="context"></param>
         public HotelRoomController(AsyncInnDbContext context)
         {
             _context = context;
@@ -161,9 +164,9 @@ namespace AsyncInn.Controllers
             }
 
             var hotelRoom = await _context.HotelRoom
-                .Include(h => h.HotelID)
-                .Include(r => r.RoomID)
-                .FirstOrDefaultAsync(r => r.RoomID == id);
+                .Include(h => h.Hotel)
+                .Include(r => r.Room)
+                .FirstOrDefaultAsync(r => r.RoomNumber == id);
             if (hotelRoom == null)
             {
                 return NotFound();
@@ -194,7 +197,7 @@ namespace AsyncInn.Controllers
         /// <returns></returns>
         private bool HotelRoomExists(int id)
         {
-            return _context.HotelRoom.Any(r => r.RoomID == id);
+            return _context.HotelRoom.Any(r => r.RoomNumber == id);
         }
     }
 }
