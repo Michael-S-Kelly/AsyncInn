@@ -29,7 +29,7 @@ namespace AsyncInn.Models.Services
             await _context.SaveChangesAsync();
         }
 
-        public void DeleteHotel(int id, Hotel hotel)
+        public void DeleteHotel(int id)
         {
             _context.Remove(hotel);
             _context.SaveChanges();

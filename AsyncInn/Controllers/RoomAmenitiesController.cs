@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AsyncInn.Data;
+using AsyncInn.Models;
+using AsyncInn.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AsyncInn.Data;
-using AsyncInn.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AsyncInn.Controllers
 {
@@ -14,6 +13,10 @@ namespace AsyncInn.Controllers
     {
         private readonly AsyncInnDbContext _context;
 
+        /// <summary>
+        /// Connects the class to the Database
+        /// </summary>
+        /// <param name="context"></param>
         public RoomAmenitiesController(AsyncInnDbContext context)
         {
             _context = context;
