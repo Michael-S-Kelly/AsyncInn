@@ -12,14 +12,18 @@ namespace AsyncInn.Controllers
     public class HotelRoomController : Controller
     {
         private readonly AsyncInnDbContext _context;
+        private readonly IHotelsManager _hotel;
+        private readonly IRoomManager _room;
 
         /// <summary>
         /// Connects the class to the Database
         /// </summary>
         /// <param name="context"></param>
-        public HotelRoomController(AsyncInnDbContext context)
+        public HotelRoomController(IHotelsManager hotel, IRoomManager room, AsyncInnDbContext context)
         {
             _context = context;
+            _hotel = hotel;
+            _room = room;
         }
 
         /// <summary>

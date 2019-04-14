@@ -1,14 +1,11 @@
 ﻿using AsyncInn.Data;
+using AsyncInn.Models.Interfaces;
+using AsyncInn.Models.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 
 namespace AsyncInn
@@ -16,9 +13,14 @@ namespace AsyncInn
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        public Startup(IConfiguration configuration)
+        public IHostingEnvironment Environment { get; }
+
+        public Startup(IHostingEnvironment environment)
         {
-            Configuration = configuration;
+            Environment = environment;
+            var builder = new ConfigurationBuilder().AddEnvironmentVariables();
+            //builder.AddUserSecrets<Startup>();
+            Configuration = builder.Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -26,7 +28,11 @@ namespace AsyncInn
             services.AddMvc();
 
             services.AddDbContext<AsyncInnDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(Configuration["DefaultConnection"]));
+
+            services.AddScoped<IAmenitiesManager, AmenitiesServices>();
+            services.AddScoped<IHotelsManager, HotelServices>();
+            services.AddScoped<IRoomManager, RoomServices>();
         }
 
         /// <summary>
