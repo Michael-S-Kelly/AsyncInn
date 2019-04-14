@@ -11,18 +11,19 @@ namespace AsyncInn.Models.Interfaces
 
         void UpdateRoom(int id, Room room);
 
-        void DeleteRoom(int id);
+        bool DeleteRoom(int id);
 
         Task<Room> GetRoom(int id);
 
         Task<List<Room>> GetRooms();
 
-        Task<List<HotelRoom>> GetHotelRooms(int id);
+        Task<List<RoomAmenities>> GetRoomAmenity(int amenitiesID);
 
-        Task<List<RoomAmenities>> GetRoomAmenities(int ID);
-        Task<List<RoomAmenities>> GetRoomAmenity(int AmenitiesID);
-        Task AddAmenity(RoomAmenities roomAmenities);
-        Task RemoveAmenity(int AmenitiesID);
+        //Task<List<RoomAmenities>> GetRoomAmenities(int AmenitiesID);
+
+        Task AssignAmenity(RoomAmenities roomAmenity);
+
+        //Task RemoveRoomAmenity(int amenitiesID);
 
         bool RoomExists(int id);
     }

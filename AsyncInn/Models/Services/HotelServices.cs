@@ -31,8 +31,13 @@ namespace AsyncInn.Models.Services
 
         public void DeleteHotel(int id)
         {
-            _context.Remove(hotel);
-            _context.SaveChanges();
+            var room = _context.Hotel.Where(i => i.ID == id);
+            if (room != null)
+            {
+                _context.Remove(room);
+                _context.SaveChanges();
+            }
+            
         }
 
         public async Task<Hotel> GetHotel(int id)

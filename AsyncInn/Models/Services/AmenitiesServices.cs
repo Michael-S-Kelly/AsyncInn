@@ -22,10 +22,15 @@ namespace AsyncInn.Models.Services
             await _context.SaveChangesAsync();
         }
 
-        void IAmenitiesManager.DeleteAmenity(int id)
+        bool IAmenitiesManager.DeleteAmenity(int id)
         {
-            _context.Remove(amenity);
-            _context.SaveChanges();
+            var amenity = _context.Amenities.Where(i => i.ID == id);
+            if (amenity != null)
+            {
+                _context.Remove(amenity);
+                _context.SaveChanges();
+            }
+            return true;
         }
 
         async Task<Amenities> IAmenitiesManager.GetAmenity(int id)
